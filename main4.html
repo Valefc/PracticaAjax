@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EJERCICIO 4</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    #resultados {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-5 mb-4">Simulación de Carrera</h1>
+    <div class="form-group">
+      <label for="numCorredores">Número de corredores:</label>
+      <input type="number" class="form-control" id="numCorredores" min="1" value="5">
+    </div>
+    <button class="btn btn-primary" onclick="iniciarCarrera()">Iniciar Carrera</button>
+    <hr>
+    <h2>Resultados de la Carrera:</h2>
+    <ul id="resultados" class="list-group"></ul>
+  </div>
+
+  <script>
+    function iniciarCarrera() {
+      var numCorredores = parseInt(document.getElementById('numCorredores').value);
+      var resultados = [];
+      var finalizados = 0;
+
+      //Generar un tiempo aleatorio entre 1 y 10 segundos
+      function generarTiempo() {
+        return Math.floor(Math.random() * 10) + 1;
+      }
+
+      //Función 
+      function correr(corredor, callback) {
+        var tiempo = generarTiempo();
+        setTimeout(function() {
+          resultados.push({ corredor: corredor, tiempo: tiempo });
+          finalizados++;
+          if (finalizados === numCorredores) {
+            callback(resultados);
+          }
+        }, tiempo*1000);
+      }
+
+      //IniciO
+      for (var i = 1; i <= numCorredores; i++) {
+        correr(i, function(resultados) {
+          var listaResultados = document.getElementById('resultados');
+          listaResultados.innerHTML = '';
+          resultados.forEach(function(resultado) {
+            var li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.textContent = 'Corredor ' + resultado.corredor + ' - Tiempo: ' + resultado.tiempo + ' segundos';
+            listaResultados.appendChild(li);
+          });
+        });
+      }
+    }
+  </script>
+</body>
+</html>
